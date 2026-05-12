@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Post</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background:#eef2f7;
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:250px;
+    min-height:100vh;
+    background:linear-gradient(180deg,#1f2937,#111827);
+    color:white;
+    padding:25px 20px;
+    position:sticky;
+    top:0;
+}
+
+.sidebar h1{
+    font-size:22px;
+    margin-bottom:30px;
+}
+
+.menu{
+    list-style:none;
+}
+
+.menu li{
+    margin-bottom:12px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:#e5e7eb;
+    display:block;
+    padding:12px;
+    border-radius:10px;
+    transition:0.3s;
+}
+
+.menu a:hover{
+    background:#374151;
+}
+
+/* MAIN CONTENT */
+
+.main{
+    flex:1;
+    padding:30px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.topbar h2{
+    font-size:24px;
+    color:#111827;
+}
+
+.topbar a{
+    text-decoration:none;
+    background:#6b7280;
+    color:white;
+    padding:10px 16px;
+    border-radius:8px;
+    transition:0.3s;
+}
+
+.topbar a:hover{
+    background:#4b5563;
+}
+
+/* CARD */
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* FORM */
+
+label{
+    display:block;
+    margin-top:14px;
+    font-size:14px;
+    font-weight:600;
+    color:#374151;
+}
+
+input,
+textarea{
+    width:100%;
+    padding:12px;
+    margin-top:6px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    outline:none;
+    font-size:14px;
+    transition:0.3s;
+}
+
+input:focus,
+textarea:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,0.1);
+}
+
+textarea{
+    min-height:180px;
+    resize:vertical;
+}
+
+/* BUTTON */
+
+button{
+    margin-top:20px;
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+/* TABLET RESPONSIVE */
+
+@media (max-width: 900px){
+
+    body{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        min-height:auto;
+        position:relative;
+    }
+
+    .menu{
+        display:flex;
+        flex-wrap:wrap;
+        gap:10px;
+    }
+
+    .menu li{
+        margin-bottom:0;
+    }
+
+}
+
+/* MOBILE RESPONSIVE */
+
+@media (max-width: 600px){
+
+    .main{
+        padding:20px 15px;
+    }
+
+    .sidebar{
+        padding:20px 15px;
+    }
+
+    .sidebar h1{
+        font-size:20px;
+        margin-bottom:20px;
+    }
+
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .topbar h2{
+        font-size:20px;
+    }
+
+    .topbar a{
+        width:100%;
+        text-align:center;
+    }
+
+    .card{
+        padding:18px;
+    }
+
+    input,
+    textarea,
+    button{
+        font-size:14px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <h1>Dashboard</h1>
+
+    <ul class="menu">
+
+        <li><a href="{% url 'dashboard' %}">📊 Dashboard</a></li>
+        <li><a href="{% url 'create_post' %}">➕ Create Post</a></li>
+        <li><a href="{% url 'post_list' %}">🌐 View Posts</a></li>
+        <li><a href="{% url 'logout' %}">🚪 Logout</a></li>
+
+    </ul>
+
+</div>
+
+<div class="main">
+
+    <div class="topbar">
+        <h2>➕ Create New Post</h2>
+        <a href="{% url 'dashboard' %}">Back</a>
+    </div>
+
+    <div class="card">
+
+        <form method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <label>Post Title</label>
+            <input type="text" name="title" placeholder="Enter title" required>
+
+            <label>Content</label>
+            <textarea name="content" placeholder="Write your post..." required></textarea>
+
+            <label>Image</label>
+            <input type="file" name="image">
+
+            <button type="submit">Publish Post</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

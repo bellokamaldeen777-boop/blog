@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Post</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background:#eef2f7;
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:250px;
+    min-height:100vh;
+    background:linear-gradient(180deg,#1f2937,#111827);
+    color:white;
+    padding:25px 20px;
+    position:sticky;
+    top:0;
+}
+
+.sidebar h1{
+    font-size:22px;
+    margin-bottom:30px;
+}
+
+.menu{
+    list-style:none;
+}
+
+.menu li{
+    margin-bottom:12px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:#e5e7eb;
+    display:block;
+    padding:12px;
+    border-radius:10px;
+    transition:0.3s;
+}
+
+.menu a:hover{
+    background:#374151;
+}
+
+/* MAIN CONTENT */
+
+.main{
+    flex:1;
+    padding:30px;
+}
+
+/* TOPBAR */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.topbar h2{
+    font-size:24px;
+    color:#111827;
+}
+
+.topbar a{
+    text-decoration:none;
+    background:#6b7280;
+    color:white;
+    padding:10px 16px;
+    border-radius:8px;
+    transition:0.3s;
+}
+
+.topbar a:hover{
+    background:#4b5563;
+}
+
+/* CARD */
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* FORM */
+
+label{
+    display:block;
+    margin-top:14px;
+    margin-bottom:6px;
+    font-size:14px;
+    font-weight:600;
+    color:#374151;
+}
+
+input,
+textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    outline:none;
+    font-size:14px;
+    transition:0.3s;
+}
+
+input:focus,
+textarea:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,0.1);
+}
+
+textarea{
+    min-height:180px;
+    resize:vertical;
+}
+
+/* IMAGE PREVIEW */
+
+.preview{
+    margin-top:10px;
+}
+
+.preview img{
+    width:100%;
+    max-width:250px;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+}
+
+/* ACTION BUTTONS */
+
+.actions{
+    margin-top:25px;
+    display:flex;
+    gap:12px;
+}
+
+button{
+    flex:1;
+    padding:13px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.save{
+    background:#2563eb;
+    color:white;
+}
+
+.save:hover{
+    background:#1d4ed8;
+}
+
+.cancel{
+    background:#ef4444;
+    color:white;
+    text-align:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    border-radius:10px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.cancel:hover{
+    background:#dc2626;
+}
+
+/* TABLET */
+
+@media (max-width: 900px){
+
+    body{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        min-height:auto;
+        position:relative;
+    }
+
+    .menu{
+        display:flex;
+        flex-wrap:wrap;
+        gap:10px;
+    }
+
+    .menu li{
+        margin-bottom:0;
+    }
+
+}
+
+/* MOBILE */
+
+@media (max-width: 600px){
+
+    .main{
+        padding:20px 15px;
+    }
+
+    .sidebar{
+        padding:20px 15px;
+    }
+
+    .sidebar h1{
+        font-size:20px;
+        margin-bottom:20px;
+    }
+
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .topbar h2{
+        font-size:20px;
+    }
+
+    .topbar a{
+        width:100%;
+        text-align:center;
+    }
+
+    .card{
+        padding:18px;
+    }
+
+    .actions{
+        flex-direction:column;
+    }
+
+    button,
+    .cancel{
+        width:100%;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <h1>Dashboard</h1>
+
+    <ul class="menu">
+
+        <li><a href="{% url 'dashboard' %}">📊 Dashboard</a></li>
+        <li><a href="{% url 'create_post' %}">➕ Create Post</a></li>
+        <li><a href="{% url 'post_list' %}">🌐 View Posts</a></li>
+        <li><a href="{% url 'logout' %}">🚪 Logout</a></li>
+
+    </ul>
+
+</div>
+
+<div class="main">
+
+    <div class="topbar">
+        <h2>✏️ Edit Post</h2>
+        <a href="{% url 'dashboard' %}">Back</a>
+    </div>
+
+    <div class="card">
+
+        <form method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <label>Title</label>
+            <input type="text" name="title" value="{{ post.title }}" required>
+
+            <label>Content</label>
+            <textarea name="content" required>{{ post.content }}</textarea>
+
+            <label>Current Image</label>
+
+            <div class="preview">
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                {% else %}
+                    <p>No image uploaded</p>
+                {% endif %}
+            </div>
+
+            <label>Change Image</label>
+            <input type="file" name="image">
+
+            <div class="actions">
+                <button type="submit" class="save">Update Post</button>
+                <a href="{% url 'dashboard' %}" class="cancel">Cancel</a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
